@@ -6,7 +6,7 @@
 #    By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/18 18:55:11 by timurray          #+#    #+#              #
-#    Updated: 2025/09/01 18:40:59 by timurray         ###   ########.fr        #
+#    Updated: 2025/09/01 18:45:32 by timurray         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,9 +64,5 @@ fclean: clean
 	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
-
-# server: $(SERVER_NAME)
-
-# client: $(CLIENT_NAME)
 
 .PHONY: all clean fclean re

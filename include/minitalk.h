@@ -6,12 +6,13 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 19:05:21 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/01 18:29:40 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:05:26 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
+#include "../libft/libft.h"
 
 #endif
