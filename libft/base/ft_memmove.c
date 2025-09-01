@@ -1,16 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/08/18 19:01:23 by timurray         ###   ########.fr       */
+/*   Created: 2025/04/16 12:26:54 by timurray          #+#    #+#             */
+/*   Updated: 2025/08/18 14:48:40 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "../libft.h"
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	return(0);
+	unsigned char	*tdest;
+	unsigned char	*tsrc;
+
+	tdest = (unsigned char *)dest;
+	tsrc = (unsigned char *)src;
+	if (tdest <= tsrc)
+	{
+		while (n--)
+			*tdest++ = *tsrc++;
+	}
+	else if (tdest > tsrc)
+	{
+		tdest = tdest + (n - 1);
+		tsrc = tsrc + (n - 1);
+		while (n--)
+			*tdest-- = *tsrc--;
+	}
+	return (dest);
 }
