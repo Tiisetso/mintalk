@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 19:05:21 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/01 20:05:26 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/02 15:15:15 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,8 @@
 # define MINITALK_H
 
 #include "../libft/libft.h"
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
 
 #endif
