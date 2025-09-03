@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/03 15:02:40 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/03 18:26:15 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,29 @@
 
 void signal_detect(int sig, siginfo_t *info, void *context)
 {
+	static unsigned char c = 0;
+	static int bit = 7;
+	static int i = 0;
+	static char buf[1024];
+	
 	(void)context;
-	if (sig == SIGUSR1)
-		ft_printf("SIGUSR1: %d from %d\n", sig, info->si_pid); //TODO change to write
-	if (sig == SIGUSR2)
-		ft_printf("SIGUSR2: %d\n", sig);
+	(void)info;
+	if(sig == SIGUSR2)
+		c = c | (1u << bit);
+	bit--;
+	if (bit < 0)
+	{
+		if (c == '\0')
+		{
+			buf[i] = '\0';
+			ft_putendl_fd(buf,1);
+			i = 0;
+		}
+		else
+			buf[i++] = c;
+		c = 0;
+		bit = 7;
+	}
 }
 
 static void    init_sigact(void)
@@ -50,7 +68,7 @@ int main(void)
 	return(0);
 }
 
-// Rebuild string!
-//process signal? Unicode?
-//show the result unicode?
+
 //send signal back. Read receipt?
+//Buf size limits?
+//Error cascading handling

@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/03 15:01:54 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/03 18:26:03 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int send_char(pid_t pid, unsigned char c)
 {
 	int i;
 	int bit;
+	int sig;
 
 	i = 8;
 	while(i > 0)
@@ -24,9 +25,10 @@ int send_char(pid_t pid, unsigned char c)
 		i--;
 		bit  = (c >> i) & 1;
 		if (bit == 0)
-			kill(pid, SIGUSR1);
+			sig = SIGUSR1;
 		else
-			kill(pid, SIGUSR2);
+			sig = SIGUSR2;
+		kill(pid, sig);
 		usleep(200);
 	}
 	return (0);
@@ -42,6 +44,7 @@ int send_string(pid_t pid, char *msg)
 		send_char(pid, msg[i]);
 		i++;
 	}
+	send_char(pid, '\0');
 	return (0);
 }
 
@@ -66,4 +69,8 @@ int main(int ac, char **av)
 }
 
 //Error check
+// Is pid a number, size limits on range
+// How much text can we send?
 // -1 exception? Edge cases?
+// Acknowledge server receipt?
+// Error cascading handling
