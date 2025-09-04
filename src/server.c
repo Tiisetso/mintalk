@@ -6,11 +6,13 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/03 18:59:04 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/04 17:11:11 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+
+static volatile sig_atomic_t msg_permission = 0;
 
 void signal_detect(int sig, siginfo_t *info, void *context)
 {
@@ -26,6 +28,8 @@ void signal_detect(int sig, siginfo_t *info, void *context)
 	bit--;
 	if (bit < 0)
 	{
+
+
 		if (c == '\0')
 		{
 			buf[i] = '\0';
@@ -68,7 +72,11 @@ int main(void)
 	return(0);
 }
 
-// Check for buf limits
-//send signal back. 
+// build up length byte
+// assign buffer
+// change flag
+//send signal back
+// build message
+
 //Read receipt for final message.
 //Error cascading handling

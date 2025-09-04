@@ -6,11 +6,13 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/04 12:33:11 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:22:31 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+
+static volatile sig_atomic_t msg_permission = 0;
 
 int send_char(pid_t pid, unsigned char c)
 {
@@ -47,10 +49,21 @@ int send_string(pid_t pid, char *msg)
 	return (0);
 }
 
-// int send_length(pid_t pid, char *msg)
-// {
-	
-// }
+int send_length(pid_t pid, unsigned int length)
+{
+	int i;
+	unsigned char byte_32;
+
+	i = 3;
+	while(i >= 0)
+	{
+		byte_32 = (unsigned char)(length >> (i * 8)) & (unsigned int)0b11111111;
+		if(!(send_char(pid, byte_32) == 0))
+			return (1);
+		i--;
+	}
+	return (0);
+}
 
 int main(int ac, char **av)
 {
@@ -66,21 +79,18 @@ int main(int ac, char **av)
 		pid = get_pid(av[1]);
 		if (!pid)
 			return (1);
+		
+
 		send_string(pid, av[2]);
-		// pid = ft_atoi(av[1]);
-		// ft_printf("pid: %d\n", pid);
-		// ft_printf("msg: %s\n", av[2]);
 	}
 	return(0);
 }
 
-//is digit first.
-
 // Arg size
-// Send length, wait, send message.
-//Error check
-// Is pid a number, size limits on range
-// How much text can we send?
+// Send length, 
+//wait, 
+//send message.
+
 // -1 exception? Edge cases?
 // Acknowledge server receipt?
 // Error cascading handling
