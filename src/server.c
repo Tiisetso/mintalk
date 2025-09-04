@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/03 18:26:15 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/03 18:59:04 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void signal_detect(int sig, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	if(sig == SIGUSR2)
-		c = c | (1u << bit);
+		c = c | (1 << bit);
 	bit--;
 	if (bit < 0)
 	{
@@ -68,7 +68,7 @@ int main(void)
 	return(0);
 }
 
-
-//send signal back. Read receipt?
-//Buf size limits?
+// Check for buf limits
+//send signal back. 
+//Read receipt for final message.
 //Error cascading handling

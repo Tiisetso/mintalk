@@ -6,7 +6,7 @@
 #    By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/18 18:55:11 by timurray          #+#    #+#              #
-#    Updated: 2025/09/01 18:45:32 by timurray         ###   ########.fr        #
+#    Updated: 2025/09/04 12:34:41 by timurray         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,10 @@ SERVER = server
 CLIENT = client
 
 SERVER_SOURCES = \
-src/server.c
+src/server.c 
 
 CLIENT_SOURCES = \
-src/client.c
+src/client.c src/utils.c
 
 SERVER_OBJ = $(SERVER_SOURCES:.c=.o)
 CLIENT_OBJ = $(CLIENT_SOURCES:.c=.o)

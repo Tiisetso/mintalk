@@ -6,12 +6,11 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/03 18:26:03 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/04 12:33:11 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
-
 
 int send_char(pid_t pid, unsigned char c)
 {
@@ -48,10 +47,14 @@ int send_string(pid_t pid, char *msg)
 	return (0);
 }
 
+// int send_length(pid_t pid, char *msg)
+// {
+	
+// }
+
 int main(int ac, char **av)
 {
-	pid_t pid;
-
+	int pid;
 
 	if (ac != 3)
 	{
@@ -60,17 +63,25 @@ int main(int ac, char **av)
 	}
 	else
 	{
-		pid = ft_atoi(av[1]);
-		ft_printf("pid: %d\n", pid);
-		ft_printf("msg: %s\n", av[2]);
+		pid = get_pid(av[1]);
+		if (!pid)
+			return (1);
 		send_string(pid, av[2]);
+		// pid = ft_atoi(av[1]);
+		// ft_printf("pid: %d\n", pid);
+		// ft_printf("msg: %s\n", av[2]);
 	}
 	return(0);
 }
 
+//is digit first.
+
+// Arg size
+// Send length, wait, send message.
 //Error check
 // Is pid a number, size limits on range
 // How much text can we send?
 // -1 exception? Edge cases?
 // Acknowledge server receipt?
 // Error cascading handling
+//does client kill return -1?
