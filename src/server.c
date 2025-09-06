@@ -6,93 +6,93 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 13:30:32 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 15:45:20 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-void signal_detect(int sig, siginfo_t *info, void *context)
+static char	*resize_msg(char *msg, int length, int *size)
 {
-	static unsigned char c = 0;
-	static int bit = 7;
-	static int i = 0;
-	static int size = 4096;
-	static char *buffer;
-	
-	(void)context;
+	char	*temp;
 
-	if (!buffer)
+	if (!msg)
 	{
-		buffer = (char *)malloc(size * sizeof(char) + 1);
-		if (!buffer)
+		msg = (char *)malloc(*size * sizeof(char) + 1);
+		if (!msg)
 			exit(1);
 	}
-	if (i + 1 == size)
+	if (length + 1 >= *size)
 	{
-		char *temp;
-		size *=  2;
-		temp = (char *)malloc(size * sizeof(char) + 1);
+		*size *= 2;
+		temp = (char *)malloc(*size * sizeof(char) + 1);
 		if (!temp)
 			exit(1);
-		temp = ft_memcpy(temp, buffer, i);
-		free(buffer);
-		buffer = temp;
+		temp = ft_memcpy(temp, msg, length);
+		free(msg);
+		msg = temp;
 	}
+	return (msg);
+}
 
-	if(sig == SIGUSR2)
+static void	finish_msg(char **msg, int *size, int *length)
+{
+	(*msg)[*length] = '\0';
+	ft_putendl_fd(*msg, 1);
+	free(*msg);
+	*msg = NULL;
+	*size = MSG_BUFFER_SIZE;
+	*length = 0;
+}
+
+static void	signal_detect(int sig, siginfo_t *info, void *context)
+{
+	static unsigned char	c = 0;
+	static int				bit = 7;
+	static int				i = 0;
+	static int				size = MSG_BUFFER_SIZE;
+	static char				*msg;
+
+	(void)context;
+	msg = resize_msg(msg, i, &size);
+	if (sig == SIGUSR2)
 		c = c | ((unsigned int)1 << bit);
-
 	if (--bit < 0)
 	{
 		if (c == '\0')
-		{
-			buffer[i] = '\0';
-			ft_putendl_fd(buffer,1);
-			i = 0;
-			free(buffer);
-			buffer = NULL;
-			size = 200;
-			i = 0;
-		}
+			finish_msg(&msg, &size, &i);
 		else
-			buffer[i++] = c;
+			msg[i++] = c;
 		c = 0;
 		bit = 7;
 	}
 	if (info)
-		kill(info-> si_pid, SIGUSR1);
+		kill(info->si_pid, SIGUSR1);
 }
 
-static void    init_sigact(void)
+static void	init_sigact(void)
 {
-    struct sigaction    sigact;
+	struct sigaction	sigact;
 
-    sigact.sa_flags = SA_SIGINFO;
-    sigact.sa_sigaction = signal_detect;
-    sigemptyset(&sigact.sa_mask);
-    sigaddset(&sigact.sa_mask, SIGUSR1);
-    sigaddset(&sigact.sa_mask, SIGUSR2);
-    if (sigaction(SIGUSR1, &sigact, 0) == -1)
-        ft_putendl_fd("fail",2);
-    if (sigaction(SIGUSR2, &sigact, 0) == -1)
-        ft_putendl_fd("fail",2);
+	sigact.sa_flags = SA_SIGINFO;
+	sigact.sa_sigaction = signal_detect;
+	sigemptyset(&sigact.sa_mask);
+	sigaddset(&sigact.sa_mask, SIGUSR1);
+	sigaddset(&sigact.sa_mask, SIGUSR2);
+	if (sigaction(SIGUSR1, &sigact, 0) == -1)
+		ft_putendl_fd("fail", 2);
+	if (sigaction(SIGUSR2, &sigact, 0) == -1)
+		ft_putendl_fd("fail", 2);
 }
 
-int main(void)
+int	main(void)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	init_sigact();
-
 	pid = getpid();
 	ft_printf("Server PID: %d\n", pid);
-	
 	while (1)
-        pause();
-		
-	return(0);
+		pause();
+	return (0);
 }
-
-
-//Error cascading handling
