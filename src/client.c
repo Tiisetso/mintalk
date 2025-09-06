@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/05 17:53:20 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:30:58 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void receipt_handler(int sig)
 
 static void receipt_wait(void)
 {
-	while(!g_msg_receipt)
+	while(g_msg_receipt == 0)
 		pause();
-	g_msg_receipt = 1;
+	// g_msg_receipt = 0;
 }
 
 int send_char(pid_t pid, unsigned char c)
@@ -42,12 +42,11 @@ int send_char(pid_t pid, unsigned char c)
 			sig = SIGUSR1;
 		else
 			sig = SIGUSR2;
+		g_msg_receipt = 0;
 		if(kill(pid, sig) == -1)
 			return (1);
-		usleep(100);
+		receipt_wait();
 	}
-	receipt_wait();
-	// ft_printf("message receipt.\n"); // TODO remove
 	return (0);
 }
 
@@ -91,7 +90,7 @@ static void    init_sigact(void)
     // sigaddset(&sigact.sa_mask, SIGUSR1);
     // sigaddset(&sigact.sa_mask, SIGUSR2);
     if (sigaction(SIGUSR1, &sigact, 0) == -1)
-        ft_putendl_fd("fail",2);
+        ft_putendl_fd("fail", 2);
     // if (sigaction(SIGUSR2, &sigact, 0) == -1)
     //     ft_putendl_fd("fail",2);
 }
@@ -118,11 +117,9 @@ int main(int ac, char **av)
 		// send_length(pid, length);
 
 
-		
-		
-
 		send_string(pid, av[2]);
 	}
+
 	return(0);
 }
 
@@ -131,6 +128,5 @@ int main(int ac, char **av)
 
 
 // -1 exception? Edge cases?
-// Acknowledge server receipt?
 // Error cascading handling
 //does client kill return -1?

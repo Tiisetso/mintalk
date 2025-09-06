@@ -6,56 +6,24 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/05 17:50:58 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 13:30:32 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
-
-// static volatile sig_atomic_t msg_permission = 0;
-
-/* void signal_detect(int sig, siginfo_t *info, void *context)
-{
-	static unsigned char c = 0;
-	static int bit = 7;
-	static int i = 0;
-	static char buf[1024];
-	
-	(void)context;
-	if(sig == SIGUSR2)
-		c = c | ((unsigned int)1 << bit);
-
-	if (--bit < 0)
-	{
-		if (c == '\0')
-		{
-			buf[i] = '\0';
-			ft_putendl_fd(buf,1);
-			i = 0;
-		}
-		else
-			buf[i++] = c;
-		if (info)
-			kill(info-> si_pid, SIGUSR1);
-		c = 0;
-		bit = 7;
-	}
-} */
 
 void signal_detect(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char c = 0;
 	static int bit = 7;
 	static int i = 0;
-	static int size = 200;
+	static int size = 4096;
 	static char *buffer;
 	
 	(void)context;
 
 	if (!buffer)
 	{
-		// ft_printf("no buffer size=%d\n", size);
-		// exit(1);
 		buffer = (char *)malloc(size * sizeof(char) + 1);
 		if (!buffer)
 			exit(1);
@@ -71,6 +39,7 @@ void signal_detect(int sig, siginfo_t *info, void *context)
 		free(buffer);
 		buffer = temp;
 	}
+
 	if(sig == SIGUSR2)
 		c = c | ((unsigned int)1 << bit);
 
@@ -88,11 +57,11 @@ void signal_detect(int sig, siginfo_t *info, void *context)
 		}
 		else
 			buffer[i++] = c;
-		if (info)
-			kill(info-> si_pid, SIGUSR1);
 		c = 0;
 		bit = 7;
 	}
+	if (info)
+		kill(info-> si_pid, SIGUSR1);
 }
 
 static void    init_sigact(void)
@@ -121,14 +90,9 @@ int main(void)
 	
 	while (1)
         pause();
+		
 	return(0);
 }
 
-// build up length byte
-// assign buffer
-// change flag
-//send signal back
-// build message
 
-//Read receipt for final message.
 //Error cascading handling
