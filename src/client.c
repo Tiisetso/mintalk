@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 17:36:35 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 18:56:44 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static int	send_string(pid_t pid, char *msg)
 		send_char(pid, msg[i]);
 		i++;
 	}
-	send_char(pid, '\0');
+	if (!send_char(pid, '\0'))
+		return (1);
 	return (0);
 }
 
@@ -66,17 +67,11 @@ static void	init_sigact(void)
 	sigact.sa_handler = receipt_handler;
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGUSR1);
-	// sigaddset(&sigact.sa_mask, SIGUSR2);
 	if (sigaction(SIGUSR1, &sigact, 0) == -1)
 	{
 		ft_putendl_fd("Client SIGUSR1 failure.", 2);
 		exit(1);
 	}
-	// if (sigaction(SIGUSR2, &sigact, 0) == -1)
-	// {
-	// 	ft_putendl_fd("Client SIGUSR2 failure.", 2);
-	// 	exit(1);
-	// }
 }
 
 int	main(int ac, char **av)
@@ -94,7 +89,11 @@ int	main(int ac, char **av)
 		if (!pid)
 			return (1);
 		init_sigact();
-		send_string(pid, av[2]);
+		if(!send_string(pid, av[2]))
+		{
+			ft_putendl_fd("Send msg failure.", 2);
+			return(1);
+		}
 	}
 	return (0);
 }

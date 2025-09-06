@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 17:38:59 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 18:51:06 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,20 @@ static void	signal_detect(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char	c = 0;
 	static int				bit = 7;
-	static int				i = 0;
+	static int				length = 0;
 	static int				size = MSG_BUFFER_SIZE;
 	static char				*msg;
 
 	(void)context;
-	msg = resize_msg(msg, i, &size);
+	msg = resize_msg(msg, length, &size);
 	if (sig == SIGUSR2)
 		c = c | ((unsigned int)1 << bit);
 	if (--bit < 0)
 	{
 		if (c == '\0')
-			finish_msg(&msg, &size, &i);
+			finish_msg(&msg, &size, &length);
 		else
-			msg[i++] = c;
+			msg[length++] = c;
 		c = 0;
 		bit = 7;
 	}
