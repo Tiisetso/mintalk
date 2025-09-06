@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 15:45:20 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:38:59 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,15 @@ static void	init_sigact(void)
 	sigaddset(&sigact.sa_mask, SIGUSR1);
 	sigaddset(&sigact.sa_mask, SIGUSR2);
 	if (sigaction(SIGUSR1, &sigact, 0) == -1)
-		ft_putendl_fd("fail", 2);
+	{
+		ft_putendl_fd("Server SIGUSR1 failure.", 2);
+		exit(1);
+	}
 	if (sigaction(SIGUSR2, &sigact, 0) == -1)
-		ft_putendl_fd("fail", 2);
+	{
+		ft_putendl_fd("Server SIGUSR2 failure.", 2);
+		exit(1);
+	}	
 }
 
 int	main(void)
