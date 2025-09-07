@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 18:51:06 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 10:29:27 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	init_sigact(void)
 	{
 		ft_putendl_fd("Server SIGUSR2 failure.", 2);
 		exit(1);
-	}	
+	}
 }
 
 int	main(void)

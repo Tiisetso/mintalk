@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 11:38:19 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 15:41:44 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 10:31:37 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	get_pid(const char *pid)
 	num = ft_atol(pid);
 	if (!(num > 0 && num <= 4194304))
 	{
-		ft_putendl_fd("Valid PID (range 1 - 4194304).", 2);
+		ft_putendl_fd("Valid PID integers (range 1 - 4194304) only.", 2);
 		return (0);
 	}
 	return ((int)(num));

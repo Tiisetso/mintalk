@@ -6,7 +6,7 @@
 #    By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/18 18:55:11 by timurray          #+#    #+#              #
-#    Updated: 2025/09/06 17:59:08 by timurray         ###   ########.fr        #
+#    Updated: 2025/09/07 10:44:38 by timurray         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ ifeq (${debug}, 2)
 endif
 
 all: $(NAME)
+
 $(NAME): $(SERVER) $(CLIENT)
 
 $(SERVER): $(LIBFT) $(SERVER_OBJ)

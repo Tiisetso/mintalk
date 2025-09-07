@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 18:56:44 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 10:38:00 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 	{
-		ft_putendl_fd("Enter PID and message string.", 2);
+		ft_putendl_fd("Invalid use.\nUsage: ./client <valid PID> <msg>", 2);
 		return (1);
 	}
 	else
@@ -89,10 +89,10 @@ int	main(int ac, char **av)
 		if (!pid)
 			return (1);
 		init_sigact();
-		if(!send_string(pid, av[2]))
+		if (!send_string(pid, av[2]))
 		{
 			ft_putendl_fd("Send msg failure.", 2);
-			return(1);
+			return (1);
 		}
 	}
 	return (0);
