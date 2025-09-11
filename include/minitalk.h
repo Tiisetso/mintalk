@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 19:05:21 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/06 15:41:50 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 12:28:00 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #  define MSG_BUFFER_SIZE 4096
 # endif
 
-int			get_pid(const char *pid);
+typedef struct sigaction	t_sigaction;
+
+pid_t						get_pid(const char *pid);
 
 #endif

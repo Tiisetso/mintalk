@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:13 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/07 10:38:00 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 12:27:27 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	send_char(pid_t pid, unsigned char c)
 	while (i > 0)
 	{
 		i--;
-		bit = (c >> i) & 1;
+		bit = (c >> i) & 1u;
 		if (bit == 0)
 			sig = SIGUSR1;
 		else
@@ -44,30 +44,33 @@ static int	send_char(pid_t pid, unsigned char c)
 	return (0);
 }
 
-static int	send_string(pid_t pid, char *msg)
+static int	send_string(pid_t pid, const char *msg)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
+	if (!msg)
+		return (1);
 	while (msg[i])
 	{
-		send_char(pid, msg[i]);
+		if (send_char(pid, (unsigned char)msg[i]))
+			return (1);
 		i++;
 	}
-	if (!send_char(pid, '\0'))
+	if (send_char(pid, '\0'))
 		return (1);
 	return (0);
 }
 
 static void	init_sigact(void)
 {
-	struct sigaction	sigact;
+	t_sigaction	sigact;
 
 	sigact.sa_flags = 0;
 	sigact.sa_handler = receipt_handler;
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGUSR1);
-	if (sigaction(SIGUSR1, &sigact, 0) == -1)
+	if (sigaction(SIGUSR1, &sigact, NULL) == -1)
 	{
 		ft_putendl_fd("Client SIGUSR1 failure.", 2);
 		exit(1);
@@ -76,7 +79,7 @@ static void	init_sigact(void)
 
 int	main(int ac, char **av)
 {
-	int	pid;
+	pid_t	pid;
 
 	if (ac != 3)
 	{
@@ -89,7 +92,7 @@ int	main(int ac, char **av)
 		if (!pid)
 			return (1);
 		init_sigact();
-		if (!send_string(pid, av[2]))
+		if (send_string(pid, av[2]))
 		{
 			ft_putendl_fd("Send msg failure.", 2);
 			return (1);

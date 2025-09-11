@@ -6,7 +6,7 @@
 /*   By: timurray <timurray@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/18 18:58:15 by timurray          #+#    #+#             */
-/*   Updated: 2025/09/07 10:29:27 by timurray         ###   ########.fr       */
+/*   Updated: 2025/09/07 12:27:35 by timurray         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	signal_detect(int sig, siginfo_t *info, void *context)
 	(void)context;
 	msg = resize_msg(msg, length, &size);
 	if (sig == SIGUSR2)
-		c = c | ((unsigned int)1 << bit);
+		c = c | (1u << bit);
 	if (--bit < 0)
 	{
 		if (c == '\0')
@@ -72,19 +72,19 @@ static void	signal_detect(int sig, siginfo_t *info, void *context)
 
 static void	init_sigact(void)
 {
-	struct sigaction	sigact;
+	t_sigaction	sigact;
 
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_sigaction = signal_detect;
 	sigemptyset(&sigact.sa_mask);
 	sigaddset(&sigact.sa_mask, SIGUSR1);
 	sigaddset(&sigact.sa_mask, SIGUSR2);
-	if (sigaction(SIGUSR1, &sigact, 0) == -1)
+	if (sigaction(SIGUSR1, &sigact, NULL) == -1)
 	{
 		ft_putendl_fd("Server SIGUSR1 failure.", 2);
 		exit(1);
 	}
-	if (sigaction(SIGUSR2, &sigact, 0) == -1)
+	if (sigaction(SIGUSR2, &sigact, NULL) == -1)
 	{
 		ft_putendl_fd("Server SIGUSR2 failure.", 2);
 		exit(1);
